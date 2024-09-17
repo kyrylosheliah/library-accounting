@@ -11,6 +11,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
+//builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+//builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 builder.Configuration.AddJsonFile("secret.json", optional: false, reloadOnChange: false);
 var config = builder.Configuration;
 
