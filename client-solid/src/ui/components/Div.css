@@ -1,0 +1,36 @@
+.div-default {
+  color: var(--black);
+  background: var(--white);
+}
+.div-white {
+  color: var(--black-const);
+  background: var(--white-const);
+}
+.div-color {
+  color: var(--white-const);
+  background: var(--primary-6);
+}
+.div-dim {
+  color: var(--medium-5);
+  background: var(--medium-3);
+}
+.dark .div-dim {
+  color: var(--medium-1);
+  background: var(--medium-2);
+}
+.div-fill {
+  color: var(--white);
+  background: var(--black);
+}
+.div-gradient {
+  color: var(--white-const);
+  background: var(--gradient);
+}
+.div-valid {
+  color: var(--white-const);
+  background: var(--green-6);
+}
+.div-invalid {
+  color: var(--white-const);
+  background: var(--red-6);
+}

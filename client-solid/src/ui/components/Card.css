@@ -1,0 +1,5 @@
+.card {
+  border: solid 1px var(--medium-3);
+  background: var(--white);
+  box-shadow: 0 0 0.5rem 0.00625rem RGB(var(--black-const-rgb), 0.2);
+}

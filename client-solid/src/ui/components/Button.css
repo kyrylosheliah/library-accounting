@@ -1,0 +1,99 @@
+.button-xs {
+  @apply text-xs py-1 px-2;
+}
+.button-sm {
+  @apply text-sm py-1.5 px-2.5;
+}
+.button-md {
+  @apply text-md py-2 px-3;
+}
+.button-lg {
+  @apply text-lg py-2.5 px-3.5;
+}
+.button-xl {
+  @apply text-xl py-3 px-4;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.button-gradient {
+  color: var(--white-const);
+  background: var(--gradient);
+  background-size: 100% 400%;
+}
+.button-gradient:hover {
+  color: var(--white-const);
+  background: var(--gradient);
+  animation: gradient 2s ease infinite;
+  background-size: 100% 400%;
+}
+
+.button-color {
+  color: var(--white-const);
+  background: var(--primary-6);
+}
+.button-color:hover {
+  background: var(--primary-8);
+}
+.button-light {
+  color: var(--primary-5);
+  background: RGB(var(--primary-6-rgb), 0.1);
+}
+.button-light:hover,
+.button-outline:hover,
+.button-subtle:hover {
+  background: RGB(var(--primary-6-rgb), 0.2);
+}
+.button-outline {
+  color: var(--primary-6);
+  border: 1px solid var(--primary-6);
+}
+.button-subtle {
+  color: var(--primary-5);
+}
+.button-fill {
+  color: var(--white);
+  background: var(--black);
+}
+.button-fill:hover {
+  background: var(--medium-8);
+}
+.button-white {
+  color: var(--primary-6);
+  background: var(--white-const);
+}
+.button-white:hover {
+  background: var(--gray-2);
+}
+.button-border {
+  color: var(--black);
+  border: 1px solid var(--medium-3);
+}
+.button-border:hover {
+  background: var(--medium-1);
+  border: 1px solid var(--medium-5);
+}
+.button-dim {
+  color: var(--medium-5);
+  background: var(--medium-3);
+}
+.dark .button-dim {
+  color: var(--medium-1);
+  background: var(--medium-2);
+}
+.button-default {
+  color: var(--black);
+}
+.button-default:hover {
+  background: var(--medium-1);
+}

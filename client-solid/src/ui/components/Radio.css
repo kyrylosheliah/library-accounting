@@ -1,0 +1,144 @@
+button[class*="radio-b"] {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.radio-b {
+  border-color: var(--medium-5);
+}
+
+.radio-b-color,
+.radio-b-outline {
+  border-color: var(--primary-6);
+}
+.radio-b-color:hover,
+.radio-b-outline:hover {
+  border-color: var(--primary-8);
+}
+.radio-b-light {
+  border-color: RGB(var(--primary-6-rgb), 0.1);
+}
+.radio-b-light:hover {
+  border-color: RGB(var(--primary-6-rgb), 0.2);
+}
+.radio-b-fill {
+  border-color: var(--black);
+}
+.radio-b-fill:hover {
+  border-color: var(--medium-8);
+}
+.radio-b-dim {
+  background-color: var(--medium-3);
+  border-color: transparent;
+}
+.dark .radio-b-dim {
+  background-color: var(--medium-2);
+  border-color: transparent;
+}
+.radio-b-default {
+  border-color: var(--black);
+}
+.radio-b-default:hover {
+  border-color: var(--medium-8);
+}
+
+.radio-d-color,
+.radio-d-outline,
+.radio-d-light {
+  background: var(--primary-6);
+}
+button[class*="radio-b"]:hover > .radio-d-color,
+button[class*="radio-b"]:hover > .radio-d-outline,
+button[class*="radio-b"]:hover > .radio-d-light {
+  background: var(--primary-8);
+}
+.radio-d-dim {
+  background: var(--medium-5);
+}
+.dark .radio-d-dim {
+  background: var(--medium-1);
+}
+.radio-d-fill {
+  background: var(--black);
+}
+button[class*="radio-b"]:hover > .radio-d-fill {
+  background: var(--medium-8);
+}
+.radio-d-default {
+  background: var(--black);
+}
+button[class*="radio-b"]:hover > .radio-d-default {
+  background: var(--medium-8);
+}
+
+.radio-i-color,
+.radio-i-outline,
+.radio-i-light {
+  color: var(--primary-6);
+}
+button[class*="radio-b"]:hover > .radio-i-color,
+button[class*="radio-b"]:hover > .radio-i-outline,
+button[class*="radio-b"]:hover > .radio-i-light {
+  color: var(--primary-8);
+}
+.radio-i-dim {
+  color: var(--medium-5);
+}
+.dark .radio-i-dim {
+  color: var(--medium-1);
+}
+.radio-i-fill {
+  color: var(--black);
+}
+button[class*="radio-b"]:hover > .radio-i-fill {
+  color: var(--medium-8);
+}
+.radio-i-default {
+  color: var(--black);
+}
+button[class*="radio-b"]:hover > .radio-i-default {
+  color: var(--medium-8);
+}
+
+button[class*="radio-b"].valid {
+  --medium-1: var(--green-1);
+  --medium-2: var(--green-2);
+  --medium-3: var(--green-3);
+  --medium-5: var(--green-5);
+  --medium-8: var(--green-8);
+  --primary-6-rgb: var(--green-6-rgb);
+  --primary-5: var(--green-5);
+  --primary-6: var(--green-6);
+  --primary-8: var(--green-8);
+  --black: var(--green-6);
+}
+.dark button[class*="radio-b"].valid {
+  --medium-1: RGB(var(--green-9-rgb), 0.7);
+  --medium-2: RGB(var(--green-9-rgb), 0.5);
+}
+button[class*="radio-b"].invalid {
+  --medium-1: var(--red-1);
+  --medium-2: var(--red-2);
+  --medium-3: var(--red-3);
+  --medium-5: var(--red-5);
+  --medium-8: var(--red-8);
+  --primary-6-rgb: var(--red-6-rgb);
+  --primary-5: var(--red-5);
+  --primary-6: var(--red-6);
+  --primary-8: var(--red-8);
+  --black: var(--red-6);
+}
+.dark button[class*="radio-b"].invalid {
+  --medium-1: RGB(var(--red-9-rgb), 0.7);
+  --medium-2: RGB(var(--red-9-rgb), 0.5);
+}
+
+.radio-filler {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+}

@@ -1,0 +1,15 @@
+.buttonbox-xs {
+  @apply min-w-6 min-h-6;
+}
+.buttonbox-sm {
+  @apply min-w-8 min-h8;
+}
+.buttonbox-md {
+  @apply min-w-10 min-h-10;
+}
+.buttonbox-lg {
+  @apply min-w-12 min-h-12;
+}
+.buttonbox-xl {
+  @apply min-w-14 min-h-14;
+}

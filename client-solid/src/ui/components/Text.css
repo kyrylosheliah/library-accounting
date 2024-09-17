@@ -1,0 +1,27 @@
+.text-default {
+  color: var(--black);
+}
+.text-white {
+  color: var(--white-const);
+}
+.text-color {
+  color: var(--primary-6);
+}
+.text-dim {
+  color: var(--medium-const-6);
+}
+.text-fill {
+  color: var(--white);
+}
+.text-gradient {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: var(--gradient);
+}
+.text-valid {
+  color: var(--green-6);
+}
+.text-invalid {
+  color: var(--red-6);
+}

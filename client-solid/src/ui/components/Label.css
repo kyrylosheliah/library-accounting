@@ -1,0 +1,19 @@
+.label-xs {
+  @apply p-1 gap-1;
+}
+.label-sm {
+  @apply p-1.5 gap-1.5;
+}
+.label-md {
+  @apply p-2 gap-2;
+}
+.label-lg {
+  @apply p-2.5 gap-2.5;
+}
+.label-xl {
+  @apply p-3 gap-3;
+}
+
+.text-red-6 {
+  color: var(--red-6);
+}

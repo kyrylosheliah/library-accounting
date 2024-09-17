@@ -1,0 +1,25 @@
+.anchor-white {
+  color: #fff;
+}
+.anchor-white:hover {
+  color: var(--medium-const-3);
+}
+.anchor-color {
+  color: var(--primary-6);
+}
+.anchor-color:hover {
+  color: var(--primary-8);
+}
+.anchor-gradient {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: var(--gradient);
+}
+.anchor-gradient:hover,
+.anchor-default:hover {
+  color: var(--primary-6);
+}
+.anchor-default {
+  color: var(--black);
+}

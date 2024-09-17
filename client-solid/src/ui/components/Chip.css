@@ -1,0 +1,57 @@
+.chip-p-xs {
+  gap: 0.25rem;
+}
+.chip-p-sm {
+  gap: 0.375rem;
+}
+.chip-p-md {
+  gap: 0.5rem;
+}
+.chip-p-lg {
+  gap: 0.625rem;
+}
+.chip-p-xl {
+  gap: 0.75rem;
+}
+
+.chip-t-p-xs {
+  padding-right: 0.25rem;
+}
+.chip-t-p-sm {
+  padding-right: 0.375rem;
+}
+.chip-t-p-md {
+  padding-right: 0.5rem;
+}
+.chip-t-p-lg {
+  padding-right: 0.625rem;
+}
+.chip-t-p-xl {
+  padding-right: 0.75rem;
+}
+
+.chip-s-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  height: 1.5rem;
+}
+.chip-s-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  height: 2rem;
+}
+.chip-s-md {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  height: 2.5rem;
+}
+.chip-s-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  height: 3rem;
+}
+.chip-s-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  height: 3.5rem;
+}

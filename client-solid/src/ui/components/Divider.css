@@ -1,0 +1,12 @@
+.divider-white {
+  background: var(--white-const);
+}
+.divider-color {
+  background: var(--premium-6);
+}
+.divider-dim {
+  background: var(--medium-3);
+}
+.divider-default {
+  background: var(--black);
+}

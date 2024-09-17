@@ -1,0 +1,90 @@
+input:focus {
+  outline: solid;
+  outline-width: 1px;
+  outline-color: var(--medium-5);
+  outline-offset: 2px;
+}
+
+.input-xs {
+  @apply p-1;
+}
+.input-sm {
+  @apply p-1.5;
+}
+.input-md {
+  @apply p-2;
+}
+.input-lg {
+  @apply p-2.5;
+}
+.input-xl {
+  @apply p-3;
+}
+
+input[class*="input"]::placeholder {
+  color: var(--medium-5);
+}
+
+.input-border {
+  color: var(--black);
+  background: var(--white);
+  border: solid 2px var(--medium-5);
+}
+.input-border:hover,
+.input-border:focus {
+  border-color: var(--medium-8);
+}
+.input-fade {
+  color: var(--black);
+  background: var(--medium-1);
+}
+.input-fade:hover,
+.input-fade:focus {
+  background: var(--medium-2);
+}
+.input-dim {
+  color: var(--medium-5);
+  background: var(--medium-3);
+}
+.dark .input-dim {
+  color: var(--medium-1);
+  background: var(--medium-2);
+}
+.dark .input-dim::placeholder {
+  color: var(--medium-1);
+}
+.input-transparent {
+  color: var(--black);
+}
+.input-default {
+  color: var(--black);
+  background: var(--white);
+}
+.input-default:hover,
+.input-default:focus {
+  background: var(--medium-2);
+}
+
+input[class*="input"].valid {
+  --medium-1: var(--green-1);
+  --medium-2: var(--green-2);
+  --medium-3: var(--green-3);
+  --medium-5: var(--green-5);
+  --medium-8: var(--green-8);
+}
+.dark input[class*="input"].valid {
+  --medium-1: RGB(var(--green-9-rgb), 0.2);
+  --medium-2: RGB(var(--green-9-rgb), 0.4);
+}
+input[class*="input"].invalid {
+  --medium-1: var(--red-1);
+  --medium-2: var(--red-2);
+  --medium-3: var(--red-3);
+  --medium-5: var(--red-5);
+  --medium-8: var(--red-8);
+  --black: var(--red-6);
+}
+.dark input[class*="input"].invalid {
+  --medium-1: RGB(var(--red-9-rgb), 0.2);
+  --medium-2: RGB(var(--red-9-rgb), 0.4);
+}

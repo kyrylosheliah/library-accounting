@@ -1,0 +1,60 @@
+.box-xs {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.box-sm {
+  width: 2rem;
+  height: 2rem;
+}
+.box-md {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.box-lg {
+  width: 3rem;
+  height: 3rem;
+}
+.box-xl {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.iconbox-color {
+  color: var(--white);
+  background: var(--primary-6);
+}
+.iconbox-light {
+  color: var(--primary-5);
+  background: RGB(var(--primary-6-rgb), 0.125);
+}
+.iconbox-outline {
+  color: var(--primary-6);
+  border: solid 1px var(--primary-6);
+}
+.iconbox-subtle {
+  color: var(--primary-6);
+}
+.iconbox-fill {
+  color: var(--black);
+  background: var(--white);
+}
+.iconbox-white {
+  color: var(--primary-6);
+  color: var(--white-const);
+}
+.iconbox-border {
+  color: var(--black);
+  border: solid 1px var(--medium-3);
+}
+.iconbox-dim {
+  color: var(--medium-5);
+  color: var(--medium-3);
+}
+.iconbox-default {
+  color: var(--black);
+}
+
+.bgless {
+  background: transparent;
+  border: none;
+}

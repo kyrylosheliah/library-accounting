@@ -1,0 +1,104 @@
+button[class*="checkbox"] {
+  border-style: solid;
+  border-width: 2px;
+}
+.checkbox {
+  color: var(--black);
+  border-color: var(--medium-5);
+}
+
+.checkbox-color {
+  color: var(--white-const);
+  background: var(--primary-6);
+  border-color: var(--primary-6);
+}
+.checkbox-color:hover {
+  background: var(--primary-8);
+  border-color: var(--primary-8);
+}
+.checkbox-light {
+  color: var(--primary-5);
+  background: RGB(var(--primary-6-rgb), 0.1);
+  border-color: RGB(var(--primary-6-rgb), 0);
+}
+.checkbox-light:hover {
+  background: RGB(var(--primary-6-rgb), 0.2);
+  border-color: RGB(var(--primary-6-rgb), 0);
+}
+.checkbox-outline {
+  color: var(--primary-6);
+  border-color: var(--primary-6);
+}
+.checkbox-outline:hover {
+  background: RGB(var(--primary-6-rgb), 0.2);
+  border-color: var(--primary-6);
+}
+.checkbox-fill {
+  color: var(--white);
+  background: var(--black);
+  border-color: var(--black);
+}
+.checkbox-fill:hover {
+  background: var(--medium-8);
+  border-color: var(--medium-8);
+}
+.checkbox-dim {
+  color: var(--medium-5);
+  background: var(--medium-3);
+  border-color: var(--medium-3);
+}
+.dark .checkbox-dim {
+  color: var(--medium-1);
+  background: var(--medium-2);
+  border-color: var(--medium-2);
+}
+.checkbox-default {
+  color: var(--black);
+  border-color: var(--black);
+}
+.checkbox-default:hover {
+  background: var(--medium-2);
+}
+
+button[class*="checkbox"].valid {
+  --medium-1: var(--green-1);
+  --medium-2: var(--green-2);
+  --medium-3: var(--green-3);
+  --medium-5: var(--green-5);
+  --medium-8: var(--green-8);
+  --primary-6-rgb: var(--green-6-rgb);
+  --primary-5: var(--green-5);
+  --primary-6: var(--green-6);
+  --primary-8: var(--green-8);
+  --black: var(--green-6);
+}
+.dark button[class*="checkbox"].valid {
+  --medium-1: RGB(var(--green-9-rgb), 0.7);
+  --medium-2: RGB(var(--green-9-rgb), 0.5);
+}
+button[class*="checkbox"].invalid {
+  --medium-1: var(--red-1);
+  --medium-2: var(--red-2);
+  --medium-3: var(--red-3);
+  --medium-5: var(--red-5);
+  --medium-8: var(--red-8);
+  --primary-6-rgb: var(--red-6-rgb);
+  --primary-5: var(--red-5);
+  --primary-6: var(--red-6);
+  --primary-8: var(--red-8);
+  --black: var(--red-6);
+}
+.dark button[class*="checkbox"].invalid {
+  --medium-1: RGB(var(--red-9-rgb), 0.7);
+  --medium-2: RGB(var(--red-9-rgb), 0.5);
+}
+
+.check-filler {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+}
