@@ -1,22 +1,30 @@
-# Library Accounting
+# Library accounting ASP.NET Core Web API backend
 
-Library accounting is made with ASP.NET Web API as a backend and web app as a frontend.
+This library accounting backend uses isolated Controller capabilities of the framework MVC infrastructure.
 
-Two attempts on the frontend part were made. The first is made with React and the second is made with SolidJS.
+The Entity Framework is configured to use PostgreSQL.
 
-Entity Framework is configured to be used with PostgreSQL.
+## Sample JSON configuration files
 
-## secret.json
-
-The backend app uses a secret.json file aside from appsettings.json to load some parameters.
-
+appsettings.json:
 ```json
 {
-    "Settings": {
-      "DBCS": "Host=localhost:5432;Database=library_accounting;Username=postgres;Password=password",
-      "JwtIssuer": "https://localhost:5000",
-      "JwtAudience": "https://localhost:3000",
-      "JwtKey": "abc123"
-    }
+  "Settings": {
+    "JwtKeyExpirationMinutes": 30,
+    "Frontend": "http://localhost:3000"
+  },
+  // ...
+}
+```
+
+secret.json:
+```json
+{
+  "Settings": {
+    "DBCS": "Host=localhost:5432;Database=library_accounting;Username=postgres;Password=password",
+    "JwtIssuer": "https://localhost:5000",
+    "JwtAudience": "https://localhost:3000",
+    "JwtKey": "abc123"
+  }
 }
 ```
