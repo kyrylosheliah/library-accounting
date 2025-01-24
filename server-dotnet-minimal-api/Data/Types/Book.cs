@@ -11,10 +11,10 @@ public class Book : IEntity
     public string? Annotation { get; set; }
     public int? BookingPolicy { get; set; }
     public int? QuantityPolicy { get; set; }
-    public List<BorrowItem> BorrowItems { get; set; } = [];
+    public List<BorrowItem> BorrowItems { get; set; } = null!;
     public BookCategory? Category { get; set; }
-    public List<ReturnItem> ReturnItems { get; set; } = [];
-    public List<Shelf> Shelves { get; set; } = [];
-    public List<SupplyItem> SupplyItems { get; set; } = [];
-    public List<Wish> Wishes { get; set; } = [];
+    public List<ReturnItem> ReturnItems { get; set; } = null!;
+    public List<Shelf> Shelves { get; set; } = null!;
+    public List<SupplyItem> SupplyItems { get; set; } = null!;
+    public List<Wish> Wishes { get; set; } = null!;
 }

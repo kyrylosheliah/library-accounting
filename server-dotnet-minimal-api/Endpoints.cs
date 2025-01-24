@@ -1,9 +1,8 @@
-using LibAcct.Authentication.Endpoints;
 using LibAcct.Common.Api.Filters;
-//using LibAcct.Posts.Endpoints;
-//using LibAcct.Users.Endpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using LibAcct.Authentication.Endpoints;
+using LibAcct.Admin.Endpoints;
 
 namespace LibAcct;
 
@@ -24,7 +23,7 @@ public static class Endpoints {
             .WithOpenApi();
 
         endpoints.MapAuthenticationEndpoints();
-        //endpoints.MapPostEndpoints();
+        endpoints.MapAdminEndpoints();
         //endpoints.MapCommentEndpoints();
         //endpoints.MapUserEndpoints();
     }
@@ -58,5 +57,17 @@ public static class Endpoints {
         endpoints.MapAuthorizedGroup()
             .MapEndpoint<Relogin>()
             .MapEndpoint<Logout>();
+    }
+
+    private static void MapAdminEndpoints(this IEndpointRouteBuilder app) {
+        var endpoints = app.MapGroup("/admin")
+            .WithTags("Admin");
+
+        endpoints.MapAuthorizedGroup()
+            .MapEndpoint<DeleteUser>()
+            .MapEndpoint<GetUser>()
+            .MapEndpoint<PostUser>()
+            .MapEndpoint<PutUser>()
+            .MapEndpoint<GetUserCount>();
     }
 }

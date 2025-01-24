@@ -7,5 +7,5 @@ public class Supplier : IEntity
     public string Phone { get; set; } = null!;
     public string? Address { get; set; }
     public string? Organization { get; set; }
-    public List<Supply> Supplies { get; set; } = [];
+    public List<Supply> Supplies { get; set; } = null!;
 }

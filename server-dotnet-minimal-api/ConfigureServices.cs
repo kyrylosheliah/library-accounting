@@ -1,5 +1,6 @@
 using LibAcct.Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text.Json.Serialization;
@@ -34,9 +35,13 @@ public static class ConfigureServices {
 
     private static void AddJsonOptions(this WebApplicationBuilder builder) {
         builder.Services.ConfigureHttpJsonOptions(options => {
-            //options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            options.SerializerOptions.MaxDepth = 256;
+            options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            options.SerializerOptions.MaxDepth = 0;
             options.SerializerOptions.PropertyNamingPolicy = null;
+
+            options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+            // another option is
+            //options.SerializerOptions.Converters.Add(new IgnoreEmptyCollectionsConverter<object>());
         });
     }
 
@@ -68,6 +73,7 @@ public static class ConfigureServices {
                 }
             );
         });
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     private static void AddJwtAuthentication(this WebApplicationBuilder builder) {
@@ -76,21 +82,28 @@ public static class ConfigureServices {
 
         builder.Services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters {
-                    ClockSkew = TimeSpan.Zero,
-                    ValidateIssuer = false, // TODO: true 
-                    ValidateAudience = false, // TODO: true
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Settings:Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Settings:Jwt:Audience"],
-                    IssuerSigningKey = JwtService.SecurityKey(jwtKey),
-                };
-            }
-        );
-        builder.Services.AddAuthorization();
+            .AddJwtBearer(
+                options => {
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ClockSkew = TimeSpan.Zero,
+                        ValidateIssuer = false, // TODO: true 
+                        ValidateAudience = false, // TODO: true
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Settings:Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Settings:Jwt:Audience"],
+                        IssuerSigningKey = JwtService.SecurityKey(jwtKey),
+                    };
+                }
+            );
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("IsAdmin", policy => {
+                policy.RequireClaim("admin", "true");
+            })
+            .AddPolicy("IsLibrarian", policy => {
+                policy.RequireClaim("librarian", "true");
+            });
 
         //builder.Services.AddScoped<JwtService>();
     }

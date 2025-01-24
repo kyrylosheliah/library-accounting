@@ -7,6 +7,6 @@ public class Return : IEntity
     public int StaffId { get; set; }
     public DateTime Date { get; set; }
     public User? Reader { get; set; }
-    public List<ReturnItem> ReturnItems { get; set; } = [];
+    public List<ReturnItem> ReturnItems { get; set; } = null!;
     public User? Staff { get; set; }
 }

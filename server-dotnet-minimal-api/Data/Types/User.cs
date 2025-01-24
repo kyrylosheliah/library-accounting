@@ -29,15 +29,15 @@ public class User : IEntity
     public string? Address { get; set; }
     public char? Gender { get; set; }
     public DateTime RegisterDate { get; set; }
-    public List<Appointment> Appointments { get; set; } = [];
-    public List<Borrow> BorrowReaders { get; set; } = [];
-    public List<Borrow> BorrowStaffs { get; set; } = [];
-    public List<Debt> Debts { get; set; } = [];
-    public List<Enrollment> Enrollments { get; set; } = [];
-    public List<MembershipTransaction> MembershipTransactions { get; set; } = [];
-    public List<Membership> Memberships { get; set; } = [];
-    public List<Return> ReturnReaders { get; set; } = [];
-    public List<Return> ReturnStaffs { get; set; } = [];
-    public List<UserClaim> UserClaims { get; set; } = [];
-    public List<Wish> Wishes { get; set; } = [];
+    public List<Appointment> Appointments { get; set; } = null!;
+    public List<Borrow> BorrowReaders { get; set; } = null!;
+    public List<Borrow> BorrowStaffs { get; set; } = null!;
+    public List<Debt> Debts { get; set; } = null!;
+    public List<Enrollment> Enrollments { get; set; } = null!;
+    public List<MembershipTransaction> MembershipTransactions { get; set; } = null!;
+    public List<Membership> Memberships { get; set; } = null!;
+    public List<Return> ReturnReaders { get; set; } = null!;
+    public List<Return> ReturnStaffs { get; set; } = null!;
+    public List<UserClaim> UserClaims { get; set; } = null!;
+    public List<Wish> Wishes { get; set; } = null!;
 }

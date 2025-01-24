@@ -24,7 +24,6 @@ public class AppDatabase(DbContextOptions<AppDatabase> options) : DbContext(opti
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         modelBuilder.Entity<Appointment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Appointment_pkey");

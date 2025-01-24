@@ -1,4 +1,6 @@
-﻿namespace LibAcct.Data.Types;
+﻿using System.Text.Json.Serialization;
+
+namespace LibAcct.Data.Types;
 
 public class Appointment : IEntity
 {
@@ -8,5 +10,5 @@ public class Appointment : IEntity
     public DateTime Created { get; set; }
     public DateTime Modified { get; set; }
     public string Text { get; set; } = null!;
-    public User? Staff { get; set; }
+    [JsonIgnore] public User? Staff { get; set; }
 }

@@ -6,5 +6,5 @@ public class Supply : IEntity
     public DateTime Date { get; set; }
     public int SupplierId { get; set; }
     public Supplier? Supplier { get; set; }
-    public List<SupplyItem> SupplyItems { get; set; } = [];
+    public List<SupplyItem> SupplyItems { get; set; } = null!;
 }
