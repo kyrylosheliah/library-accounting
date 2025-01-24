@@ -47,12 +47,10 @@ public static class ConfigureApp {
     }
 
     private static void AddAuthentication(this WebApplication app) {
-        // authorization header coercing
         app.Use(async (context, next) => {
             var token = context.Request.Cookies["token"];
-            Console.WriteLine("[?] AddAuthorizationHeaderCoercing()");
             if (!string.IsNullOrEmpty(token)) {
-                Console.WriteLine("[?] AddAuthorizationHeaderCoercing() : token isn't empty");
+                //Console.WriteLine("[?] token wasn't null, coercing authorization header");
                 context.Request.Headers.Append("Authorization", "Bearer " + token);
             }
             await next();

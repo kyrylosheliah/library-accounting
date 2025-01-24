@@ -92,8 +92,6 @@ public static class ConfigureServices {
         );
         builder.Services.AddAuthorization();
 
-        //builder.Services.Configure<JwtServiceOptions>(builder.Configuration.GetSection("Jwt"));
-        builder.Services.AddScoped<JwtService>();
-        //builder.Services.AddTransient<Jwt>();
+        //builder.Services.AddScoped<JwtService>();
     }
 }

@@ -4,7 +4,6 @@ namespace LibAcct.Common.Api.Filters;
 
 public class EnsureRequesterOwnershipFilter<TRequest, TEntity>(
     AppDatabase database,
-    JwtService jwtService,
     Func<TRequest, int> selectEntityId,
     Func<TEntity, int> selectRelationId
 ) : IEndpointFilter
@@ -15,7 +14,7 @@ public class EnsureRequesterOwnershipFilter<TRequest, TEntity>(
     ) {
         var request = context.Arguments.OfType<TRequest>().Single();
         var cancellationToken = context.HttpContext.RequestAborted;
-        var userId = jwtService.ExtractUserIdFromToken(context.HttpContext);
+        var userId = JwtService.ExtractUserIdFromToken(context.HttpContext);
         var id = selectEntityId(request);
 
         var entity = await database

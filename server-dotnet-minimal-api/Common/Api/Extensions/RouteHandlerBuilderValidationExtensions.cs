@@ -13,8 +13,8 @@ public static class RouteHandlerBuilderValidationExtensions {
     public static RouteHandlerBuilder WithEnsureEntityExists<TRequest, TEntity>(this RouteHandlerBuilder builder, Func<TRequest, int?> idSelector) where TEntity : class, IEntity {
         return builder
             .AddEndpointFilterFactory((endpointFilterFactoryContext, next) => async context => {
-                var db = context.HttpContext.RequestServices.GetRequiredService<AppDatabase>();
-                var filter = new EnsureEntityExistsFilter<TRequest, TEntity>(db, idSelector);
+                var database = context.HttpContext.RequestServices.GetRequiredService<AppDatabase>();
+                var filter = new EnsureEntityExistsFilter<TRequest, TEntity>(database, idSelector);
                 return await filter.InvokeAsync(context, next);
             }).ProducesProblem(StatusCodes.Status404NotFound);
     }
@@ -26,11 +26,9 @@ public static class RouteHandlerBuilderValidationExtensions {
     ) where TEntity : class, IEntity {
         return builder
             .AddEndpointFilterFactory((endpointFilterFactoryContext, next) => async context => {
-                var db = context.HttpContext.RequestServices.GetRequiredService<AppDatabase>();
-                var jwtService = context.HttpContext.RequestServices.GetRequiredService<JwtService>();
+                var database = context.HttpContext.RequestServices.GetRequiredService<AppDatabase>();
                 var filter = new EnsureRequesterOwnershipFilter<TRequest, TEntity>(
-                    db,
-                    jwtService,
+                    database,
                     selectEntityId,
                     selectRelationId
                 );

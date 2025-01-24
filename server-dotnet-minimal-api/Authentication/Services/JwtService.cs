@@ -8,7 +8,7 @@ public class JwtService {
 
     public static SymmetricSecurityKey SecurityKey(string key) => new(Encoding.ASCII.GetBytes(key));
 
-    public string CreateToken(
+    public static async Task<string> CreateToken(
         User user,
         AppSettings settings,
         AppDatabase database
@@ -26,8 +26,8 @@ public class JwtService {
             //new ("iss", "localhost:5000"), // TODO: extract from settings
             //new ("aud", "localhost:5000"), // TODO: extract from settings
         };
-        var userClaims = database.UserClaims
-            .Where(uc => uc.UserId == user.Id).AsEnumerable();
+        var userClaims = await database.UserClaims
+            .Where(uc => uc.UserId == user.Id).ToListAsync();
         if (userClaims != null) {
             foreach (var userClaim in userClaims) {
                 claims.Add(new Claim(userClaim.Type, userClaim.Value));
@@ -46,13 +46,25 @@ public class JwtService {
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public void AppendProtectionHeaders(IHeaderDictionary headers) {
+    public static void ApplyToken(HttpContext context, AppSettings settings, string token) {
+        context.Response.Cookies.Append(
+            "token",
+            token,
+            new CookieOptions {
+                MaxAge = TimeSpan.FromMinutes(settings.Jwt.ExpirationMinutes),
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = false
+            }
+        );
+    }
+
+    public static void AppendProtectionHeaders(IHeaderDictionary headers) {
         headers.Append("X-Content-Type-Options", "nosniff");
         headers.Append("X-Xss-Protection", "1");
         headers.Append("X-Frame-Options", "DENY");
     }
 
-    public int? ExtractUserIdFromToken(HttpContext context) {
+    public static int? ExtractUserIdFromToken(HttpContext context) {
         var requestToken = new JwtSecurityToken(context.Request.Cookies["token"]);
         var userIdClaim = requestToken.Claims.SingleOrDefault(c => c.Type == "uid");
         if (userIdClaim is null) {

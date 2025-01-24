@@ -1,5 +1,4 @@
 using LibAcct.Authentication.Services;
-using BCrypt.Net;
 
 namespace LibAcct.Authentication.Endpoints;
 
@@ -22,7 +21,6 @@ public class Login : IEndpoint {
         Request request,
         AppDatabase database,
         AppSettings settings,
-        JwtService jwtService,
         CancellationToken cancellationToken
     ) {
         var user = await database.Users.SingleOrDefaultAsync(
@@ -38,17 +36,9 @@ public class Login : IEndpoint {
         if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)) {
             return TypedResults.Unauthorized();
         }
-        jwtService.AppendProtectionHeaders(context.Response.Headers);
-        var token = jwtService.CreateToken(user, settings, database);
-        context.Response.Cookies.Append(
-            "token",
-            token,
-            new CookieOptions {
-                MaxAge = TimeSpan.FromMinutes(settings.Jwt.ExpirationMinutes),
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = false
-            }
-        );
+        JwtService.AppendProtectionHeaders(context.Response.Headers);
+        var token = await JwtService.CreateToken(user, settings, database);
+        JwtService.ApplyToken(context, settings, token);
         return TypedResults.Ok();
     }
 }

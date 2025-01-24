@@ -1,6 +1,3 @@
-using LibAcct.Authentication.Services;
-using BCrypt.Net;
-
 namespace LibAcct.Authentication.Endpoints;
 
 public class Logout : IEndpoint {

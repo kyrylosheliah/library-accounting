@@ -1,5 +1,3 @@
-using LibAcct.Authentication.Services;
-
 namespace LibAcct.Authentication.Endpoints;
 
 public class Signup : IEndpoint {
@@ -9,7 +7,7 @@ public class Signup : IEndpoint {
         .WithRequestValidation<Request>();
 
     public record Request(string Email, string Name, string Password);
-    public record Response(string Route, string Email, Request Request);
+    public record Response(string Email, string Name);
     public class RequestValidator : AbstractValidator<Request> {
         public RequestValidator() {
             RuleFor(x => x.Email).NotEmpty();
@@ -22,7 +20,6 @@ public class Signup : IEndpoint {
         Request request,
         AppDatabase database,
         AppSettings settings,
-        JwtService jwtService,
         CancellationToken cancellationToken
     ) {
         var found = await database.Users
@@ -46,8 +43,8 @@ public class Signup : IEndpoint {
         if (await database.SaveChangesAsync(cancellationToken) == 0) {
             return TypedResults.BadRequest("Failed to create a user");
         }
-        //var token = jwtService.CreateToken(user, settings, database);
-        var response = new Response(nameof(Signup), user.Email, request);
-        return TypedResults.CreatedAtRoute(response);
+        //var token = JwtService.CreateToken(user, settings, database);
+        var response = new Response(request.Email, request.Name);
+        return TypedResults.Created(nameof(Signup), response);
     }
 }
