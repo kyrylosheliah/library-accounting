@@ -66,8 +66,17 @@ public static class Endpoints {
         endpoints.MapAuthorizedGroup()
             .MapEndpoint<DeleteUser>()
             .MapEndpoint<GetUser>()
+            .MapEndpoint<GetUsers>()
             .MapEndpoint<PostUser>()
             .MapEndpoint<PutUser>()
             .MapEndpoint<GetUserCount>();
+        
+        endpoints.MapAuthorizedGroup()
+            .MapEndpoint<DeleteClaim>()
+            .MapEndpoint<GetClaim>()
+            .MapEndpoint<GetClaims>()
+            .MapEndpoint<PostClaim>()
+            .MapEndpoint<PutClaim>()
+            .MapEndpoint<GetClaimCount>();
     }
 }

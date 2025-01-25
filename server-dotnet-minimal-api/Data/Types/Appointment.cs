@@ -10,5 +10,5 @@ public class Appointment : IEntity
     public DateTime Created { get; set; }
     public DateTime Modified { get; set; }
     public string Text { get; set; } = null!;
-    [JsonIgnore] public User? Staff { get; set; }
+    public User? Staff { get; set; }
 }

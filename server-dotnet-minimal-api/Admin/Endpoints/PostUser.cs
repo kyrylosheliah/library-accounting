@@ -3,7 +3,7 @@ namespace LibAcct.Admin.Endpoints;
 public class PostUser : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPost("/user", Handle)
-        .WithSummary("Count Users table entities")
+        .WithSummary("Create new user record with unique email field")
         .RequireAuthorization("IsAdmin");
 
     private static async Task<IResult> Handle(

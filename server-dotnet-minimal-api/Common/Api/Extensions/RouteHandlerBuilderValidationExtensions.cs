@@ -1,4 +1,3 @@
-using LibAcct.Authentication.Services;
 using LibAcct.Common.Api.Filters;
 
 namespace LibAcct.Common.Api.Extensions;

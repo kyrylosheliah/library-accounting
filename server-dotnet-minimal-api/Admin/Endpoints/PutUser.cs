@@ -3,7 +3,7 @@ namespace LibAcct.Admin.Endpoints;
 public class PutUser : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPut("/user", Handle)
-        .WithSummary("Put user data at the entity with the same ID")
+        .WithSummary("Update user fields at the record with the same ID")
         .RequireAuthorization("IsAdmin");
 
     private static async Task<IResult> Handle(
