@@ -1,4 +1,3 @@
-using LibAcct.Common.Api.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using LibAcct.Authentication.Endpoints;

@@ -1,9 +1,11 @@
+using LibAcct.App.Data;
+
 namespace LibAcct.Admin.Endpoints;
 
 public class PostClaim : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPost("/claim", Handle)
-        .WithSummary("Create new userclaim record")
+        .WithSummary("Create a new userclaim record")
         .RequireAuthorization("IsAdmin");
 
     private static async Task<IResult> Handle(
@@ -12,7 +14,7 @@ public class PostClaim : IEndpoint {
         CancellationToken cancellationToken
     ) {
         var found = await database.UserClaims.FirstOrDefaultAsync(
-            c => c.UserId == request.UserId && c.Type == request.Type && c.Value == request.Value,
+            x => x.UserId == request.UserId && x.Type == request.Type && x.Value == request.Value,
             cancellationToken
         );
         if (found is not null) {

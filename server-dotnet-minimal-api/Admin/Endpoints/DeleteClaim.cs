@@ -11,7 +11,7 @@ public class DeleteClaim : IEndpoint {
         AppDatabase database,
         CancellationToken cancellationToken
     ) {
-        var found = await database.UserClaims.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        var found = await database.UserClaims.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (found is null) {
             return TypedResults.NotFound();
         }

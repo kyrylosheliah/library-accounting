@@ -11,7 +11,7 @@ public class DeleteUser : IEndpoint {
         AppDatabase database,
         CancellationToken cancellationToken
     ) {
-        var found = await database.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        var found = await database.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (found is null) {
             return TypedResults.NotFound();
         }

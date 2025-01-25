@@ -1,9 +1,9 @@
 namespace LibAcct.Admin.Endpoints;
 
-public class GetUser : IEndpoint {
+public class GetEnrollmentEvent : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) => app
-        .MapGet("/user/{id}", Handle)
-        .WithSummary("Get a user record by ID")
+        .MapGet("/enrollmentevent/{id}", Handle)
+        .WithSummary("Get an enrollmentevent record by ID")
         .RequireAuthorization("IsAdmin");
 
     private static async Task<IResult> Handle(
@@ -12,7 +12,7 @@ public class GetUser : IEndpoint {
         AppDatabase database,
         CancellationToken cancellationToken
     ) {
-        var found = await database.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        var found = await database.EnrollmentEvents.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (found is null) {
             return TypedResults.NotFound();
         }

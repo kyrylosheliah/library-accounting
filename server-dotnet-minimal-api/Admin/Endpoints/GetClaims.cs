@@ -1,3 +1,5 @@
+using LibAcct.App.Data;
+
 namespace LibAcct.Admin.Endpoints;
 
 public class GetClaims : IEndpoint {

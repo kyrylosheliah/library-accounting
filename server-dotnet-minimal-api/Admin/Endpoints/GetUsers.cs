@@ -1,3 +1,5 @@
+using LibAcct.App.Data;
+
 namespace LibAcct.Admin.Endpoints;
 
 public class GetUsers : IEndpoint {
@@ -22,9 +24,9 @@ public class GetUsers : IEndpoint {
         );
         result = result
             .Select(
-                u => {
-                    u.PasswordHash = "";
-                    return u;
+                x => {
+                    x.PasswordHash = "";
+                    return x;
                 })
             .ToList();
         if (pageCount == 0) {

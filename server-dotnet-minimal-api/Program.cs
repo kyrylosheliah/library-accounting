@@ -1,9 +1,9 @@
-global using LibAcct.Common.Api;
-global using LibAcct.Common.Api.Extensions;
-global using LibAcct.Common.Api.Requests;
-global using LibAcct.Common.Api.Results;
-global using LibAcct.Data;
-global using LibAcct.Data.Types;
+global using LibAcct.App;
+global using LibAcct.App.Data;
+global using LibAcct.App.Endpoint;
+global using LibAcct.App.Endpoint.Extensions;
+global using LibAcct.App.Endpoint.Results;
+global using LibAcct.App.Endpoint.Filters;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Http.HttpResults;
 global using Microsoft.EntityFrameworkCore;

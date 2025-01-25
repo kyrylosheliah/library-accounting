@@ -1,9 +1,11 @@
+using LibAcct.App.Data;
+
 namespace LibAcct.Admin.Endpoints;
 
 public class PutUser : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPut("/user", Handle)
-        .WithSummary("Update user fields at the record with the same ID")
+        .WithSummary("Update an user record fields with matching ID field")
         .RequireAuthorization("IsAdmin");
 
     private static async Task<IResult> Handle(
@@ -11,7 +13,7 @@ public class PutUser : IEndpoint {
         AppDatabase database,
         CancellationToken cancellationToken
     ) {
-        var found = await database.Users.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
+        var found = await database.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (found is null) {
             return TypedResults.NotFound();
         }

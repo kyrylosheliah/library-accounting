@@ -1,9 +1,11 @@
+using LibAcct.App.Data;
+
 namespace LibAcct.Admin.Endpoints;
 
 public class PostUser : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPost("/user", Handle)
-        .WithSummary("Create new user record with unique email field")
+        .WithSummary("Create a new user record with unique email field")
         .RequireAuthorization("IsAdmin");
 
     private static async Task<IResult> Handle(
@@ -12,7 +14,7 @@ public class PostUser : IEndpoint {
         AppDatabase database,
         CancellationToken cancellationToken
     ) {
-        var found = await database.Users.FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+        var found = await database.Users.FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
         if (found is not null) {
             return TypedResults.Conflict();
         }

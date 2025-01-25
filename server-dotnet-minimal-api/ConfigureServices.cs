@@ -1,6 +1,5 @@
 using LibAcct.Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text.Json.Serialization;
