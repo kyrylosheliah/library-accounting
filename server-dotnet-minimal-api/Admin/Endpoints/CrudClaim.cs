@@ -2,11 +2,11 @@ using LibAcct.App.Crud;
 
 namespace LibAcct.Admin.Endpoints;
 
-public class EnrollmentEventCrud : IEndpoint {
+public class CrudClaim : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) {
-        Crud<EnrollmentEvent>.MapEndpoints(app, new CrudSpecification<EnrollmentEvent> {
+        Crud<UserClaim>.MapEndpoints(app, new CrudSpecification<UserClaim> {
             AuthorizationPolicies = [ "IsAdmin" ],
-            EnsureUniqueBeforePost = [ "Event" ],
+            EnsureUniqueBeforePost = [ "UserId", "Type", "Value" ],
         });
     }
 }

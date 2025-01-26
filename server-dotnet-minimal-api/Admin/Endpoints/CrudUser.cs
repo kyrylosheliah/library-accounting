@@ -2,10 +2,13 @@ using LibAcct.App.Crud;
 
 namespace LibAcct.Admin.Endpoints;
 
-public class UserCrud : IEndpoint {
+public class CrudUser : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) {
         Crud<User>.MapEndpoints(app, new CrudSpecification<User> {
             AuthorizationPolicies = [ "IsAdmin" ],
+            ModifyAfterGet = x => {
+                x.PasswordHash = "";
+            },
             ModifyAfterGetMultiple = x => {
                 x.PasswordHash = "";
             },

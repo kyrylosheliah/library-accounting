@@ -4,22 +4,6 @@ using Microsoft.EntityFrameworkCore.DynamicLinq;
 
 namespace LibAcct.App.Crud;
 
-public class Relation {
-    public string FromPropertyName { get; set; } = null!;
-    public string ToEntityName { get; set; } = null!;
-}
-
-public class CrudSpecification<T> {
-    public string[] AuthorizationPolicies { get; set; } = [];
-    public Action<T>? ModifyAfterGetMultiple { get; set; } = null;
-    public string[] EnsureUniqueBeforePost { get; set; } = null!;
-    public Func<T, AppDatabase, CancellationToken, Task<bool>>? EnsureExistsBeforePost { get; set; } = null;
-    public Action<T>? ModifyBeforePost { get; set; } = null;
-    public Action<T>? ModifyAfterPost { get; set; } = null;
-    public Action<T, T>? ModifyBeforePut { get; set; } = null;
-    public bool? ForbidPut { get; set; } = null;
-}
-
 public class Crud<T> where T : class, IEntity, new() {
 
     public static void MapEndpoints(
@@ -30,12 +14,12 @@ public class Crud<T> where T : class, IEntity, new() {
         var routePrefix = "/" + entityName.ToLower();
 
         app
-            .MapDelete(routePrefix + "{id}", HandleDelete)
+            .MapDelete(routePrefix + "{id}", DecorateHandleDelete(spec))
             .WithSummary($"Delete a record from '{entityName}' table by ID")
             .RequireAuthorization(spec.AuthorizationPolicies);
 
         app
-            .MapGet(routePrefix + "{id}", HandleGet)
+            .MapGet(routePrefix + "{id}", DecorateHandleGet(spec))
             .WithSummary($"Get a(n) '{entityName}' table record by ID")
             .RequireAuthorization(spec.AuthorizationPolicies);
 
@@ -60,35 +44,45 @@ public class Crud<T> where T : class, IEntity, new() {
             .RequireAuthorization(spec.AuthorizationPolicies);
     }
 
-    private static async Task<IResult> HandleDelete(
-        int id,
-        AppDatabase database,
-        CancellationToken cancellationToken
-    ) {
-        var dbSet = database.Set<T>();
-        var found = await dbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-        if (found is null) {
-            return TypedResults.NotFound();
-        }
-        dbSet.Remove(found);
-        if (await database.SaveChangesAsync(cancellationToken) == 0) {
-            var entityName = dbSet.EntityType.Name;
-            return TypedResults.InternalServerError($"Failed to remove the '{entityName}' table record");
-        }
-        return TypedResults.NoContent();
+    private static Func<int,
+                        AppDatabase,
+                        CancellationToken,
+                        Task<IResult>>
+    DecorateHandleDelete(CrudSpecification<T> spec) {
+        return async (id, database, cancellationToken) => {
+            var dbSet = database.Set<T>();
+            var found = await dbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            if (found is null) {
+                return TypedResults.NotFound();
+            }
+            dbSet.Remove(found);
+            if (await database.SaveChangesAsync(cancellationToken) == 0) {
+                var entityName = dbSet.EntityType.Name;
+                return TypedResults.InternalServerError($"Failed to remove the '{entityName}' table record");
+            }
+            if (spec.DoAfterDelete is not null) {
+                spec.DoAfterDelete(id);
+            }
+            return TypedResults.NoContent();
+        };
     }
 
-    private static async Task<IResult> HandleGet(
-        int id,
-        AppDatabase database,
-        CancellationToken cancellationToken
-    ) {
-        var dbSet = database.Set<T>();
-        var found = await dbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-        if (found is null) {
-            return TypedResults.NotFound();
-        }
-        return TypedResults.Ok(found);
+    private static Func<int,
+                        AppDatabase,
+                        CancellationToken,
+                        Task<IResult>>
+    DecorateHandleGet(CrudSpecification<T> spec) {
+        return async (id, database, cancellationToken) => {
+            var dbSet = database.Set<T>();
+            var found = await dbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            if (found is null) {
+                return TypedResults.NotFound();
+            }
+            if (spec.ModifyAfterGet is not null) {
+                spec.ModifyAfterGet(found);
+            }
+            return TypedResults.Ok(found);
+        };
     }
 
     private static async Task<IResult> HandleGetCount(
@@ -133,14 +127,16 @@ public class Crud<T> where T : class, IEntity, new() {
     DecorateHandlePost(CrudSpecification<T> spec) {
         return async (request, database, cancellationToken) => {
             var dbSet = database.Set<T>();
-            var searchQuery = dbSet.AsQueryable();
-            foreach (var property in spec.EnsureUniqueBeforePost) {
-                var requestFieldValue = typeof(T).GetProperty(property).GetValue(request).ToString();
-                searchQuery = searchQuery.Where($"x => x.{property} == \"{requestFieldValue}\"");
-            }
-            var found = await searchQuery.FirstOrDefaultAsync(cancellationToken);
-            if (found is not null) {
-                return TypedResults.Conflict();
+            if (spec.EnsureExistsBeforePost is not null) {
+                var searchQuery = dbSet.AsQueryable();
+                foreach (var property in spec.EnsureUniqueBeforePost) {
+                    var requestFieldValue = typeof(T).GetProperty(property).GetValue(request).ToString();
+                    searchQuery = searchQuery.Where($"x => x.{property} == \"{requestFieldValue}\"");
+                }
+                var found = await searchQuery.FirstOrDefaultAsync(cancellationToken);
+                if (found is not null) {
+                    return TypedResults.Conflict();
+                }
             }
             if (spec.EnsureExistsBeforePost is not null) {
                 if (!await spec.EnsureExistsBeforePost(request, database, cancellationToken)) {
@@ -168,10 +164,8 @@ public class Crud<T> where T : class, IEntity, new() {
                         CancellationToken,
                         Task<IResult>>
     DecorateHandlePut(CrudSpecification<T> spec) {
-        if (spec.ForbidPut != null) {
-            if (spec.ForbidPut == true) {
-                return async (request, database, CancellationToken) => TypedResults.Forbid();
-            }
+        if (spec.ForbidPut is true) {
+            return async (request, database, CancellationToken) => TypedResults.Forbid();
         }
         return async (request, database, cancellationToken) => {
             var dbSet = database.Set<T>();

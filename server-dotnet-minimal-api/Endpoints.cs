@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using LibAcct.Authentication.Endpoints;
 using LibAcct.Admin.Endpoints;
+using LibAcct.Librarian.Endpoints;
 
 namespace LibAcct;
 
@@ -23,8 +24,9 @@ public static class Endpoints {
 
         endpoints.MapAuthenticationEndpoints();
         endpoints.MapAdminEndpoints();
-        //endpoints.MapCommentEndpoints();
+        endpoints.MapLibrarianEndpoints();
         //endpoints.MapUserEndpoints();
+        //endpoints.MapLibraryEndpoints();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint {
@@ -63,10 +65,20 @@ public static class Endpoints {
             .WithTags("Admin");
 
         endpoints.MapAuthorizedGroup()
-            .MapEndpoint<UserCrud>()
-            .MapEndpoint<ClaimCrud>()
-            .MapEndpoint<EnrollmentEventCrud>()
-            .MapEndpoint<EnrollmentCrud>();
+            .MapEndpoint<CrudUser>()
+            .MapEndpoint<CrudClaim>()
+            .MapEndpoint<CrudEnrollmentEvent>()
+            .MapEndpoint<CrudEnrollment>();
+    }
 
+    private static void MapLibrarianEndpoints(this IEndpointRouteBuilder app) {
+        var endpoints = app.MapGroup("/librarian")
+            .WithTags("Librarian");
+
+        endpoints.MapAuthorizedGroup()
+            .MapEndpoint<DeleteBookCover>()
+            .MapEndpoint<GetBookCover>()
+            .MapEndpoint<PostBookCover>()
+            .MapEndpoint<CrudBook>();
     }
 }

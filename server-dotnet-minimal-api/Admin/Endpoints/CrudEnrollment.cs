@@ -2,7 +2,7 @@ using LibAcct.App.Crud;
 
 namespace LibAcct.Admin.Endpoints;
 
-public class EnrollmentCrud : IEndpoint {
+public class CrudEnrollment : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) {
         Crud<Enrollment>.MapEndpoints(app, new CrudSpecification<Enrollment> {
             AuthorizationPolicies = [ "IsAdmin" ],

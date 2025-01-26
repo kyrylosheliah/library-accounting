@@ -7,7 +7,7 @@ public static class RouteHandlerBuilderValidationExtensions {
             .ProducesValidationProblem();
     }
 
-    public static RouteHandlerBuilder WithEnsureEntityExists<TRequest, TEntity>(this RouteHandlerBuilder builder, Func<TRequest, int?> idSelector) where TEntity : class, IEntity {
+    public static RouteHandlerBuilder WithEnsureEntityExists<TEntity, TRequest>(this RouteHandlerBuilder builder, Func<TRequest, int?> idSelector) where TEntity : class, IEntity {
         return builder
             .AddEndpointFilterFactory((endpointFilterFactoryContext, next) => async context => {
                 var database = context.HttpContext.RequestServices.GetRequiredService<AppDatabase>();
