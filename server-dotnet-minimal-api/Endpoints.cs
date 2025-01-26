@@ -63,19 +63,9 @@ public static class Endpoints {
             .WithTags("Admin");
 
         endpoints.MapAuthorizedGroup()
-            .MapEndpoint<DeleteUser>()
-            .MapEndpoint<GetUser>()
-            .MapEndpoint<GetUsers>()
-            .MapEndpoint<PostUser>()
-            .MapEndpoint<PutUser>()
-            .MapEndpoint<GetUserCount>();
+            .MapEndpoint<UserCrud>();
         
         endpoints.MapAuthorizedGroup()
-            .MapEndpoint<DeleteClaim>()
-            .MapEndpoint<GetClaim>()
-            .MapEndpoint<GetClaims>()
-            .MapEndpoint<PostClaim>()
-            .MapEndpoint<PutClaim>()
-            .MapEndpoint<GetClaimCount>();
+            .MapEndpoint<ClaimCrud>();
     }
 }

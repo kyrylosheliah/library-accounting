@@ -2,6 +2,7 @@ using LibAcct.Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace LibAcct;
@@ -36,7 +37,7 @@ public static class ConfigureServices {
         builder.Services.ConfigureHttpJsonOptions(options => {
             options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.SerializerOptions.MaxDepth = 0;
-            options.SerializerOptions.PropertyNamingPolicy = null;
+            options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 
             options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
             // another option is
