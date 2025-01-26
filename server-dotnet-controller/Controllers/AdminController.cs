@@ -304,15 +304,6 @@ public class AdminController : ControllerBase
         request.Id = 0;
         request.EventDate = DateTime.UtcNow;
         var created = _db.Enrollments.Add(request);
-        _db.UserClaims.Add(
-            new UserClaim()
-            {
-                Id = 0,
-                UserId = request.StaffId,
-                Type = "librarian",
-                Value = "true"
-            }
-        );
         if (await _db.SaveChangesAsync() < 2)
         {
             return BadRequest();

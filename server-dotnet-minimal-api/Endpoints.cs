@@ -63,9 +63,10 @@ public static class Endpoints {
             .WithTags("Admin");
 
         endpoints.MapAuthorizedGroup()
-            .MapEndpoint<UserCrud>();
-        
-        endpoints.MapAuthorizedGroup()
-            .MapEndpoint<ClaimCrud>();
+            .MapEndpoint<UserCrud>()
+            .MapEndpoint<ClaimCrud>()
+            .MapEndpoint<EnrollmentEventCrud>()
+            .MapEndpoint<EnrollmentCrud>();
+
     }
 }

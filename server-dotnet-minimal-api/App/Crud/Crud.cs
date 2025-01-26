@@ -4,13 +4,20 @@ using Microsoft.EntityFrameworkCore.DynamicLinq;
 
 namespace LibAcct.App.Crud;
 
+public class Relation {
+    public string FromPropertyName { get; set; } = null!;
+    public string ToEntityName { get; set; } = null!;
+}
+
 public class CrudSpecification<T> {
     public string[] AuthorizationPolicies { get; set; } = [];
     public Action<T>? ModifyAfterGetMultiple { get; set; } = null;
     public string[] EnsureUniqueBeforePost { get; set; } = null!;
+    public Func<T, AppDatabase, CancellationToken, Task<bool>>? EnsureExistsBeforePost { get; set; } = null;
     public Action<T>? ModifyBeforePost { get; set; } = null;
     public Action<T>? ModifyAfterPost { get; set; } = null;
     public Action<T, T>? ModifyBeforePut { get; set; } = null;
+    public bool? ForbidPut { get; set; } = null;
 }
 
 public class Crud<T> where T : class, IEntity, new() {
@@ -135,6 +142,11 @@ public class Crud<T> where T : class, IEntity, new() {
             if (found is not null) {
                 return TypedResults.Conflict();
             }
+            if (spec.EnsureExistsBeforePost is not null) {
+                if (!await spec.EnsureExistsBeforePost(request, database, cancellationToken)) {
+                    return TypedResults.BadRequest();
+                }
+            }
             request.Id = 0;
             if (spec.ModifyBeforePost is not null) {
                 spec.ModifyBeforePost(request);
@@ -156,6 +168,11 @@ public class Crud<T> where T : class, IEntity, new() {
                         CancellationToken,
                         Task<IResult>>
     DecorateHandlePut(CrudSpecification<T> spec) {
+        if (spec.ForbidPut != null) {
+            if (spec.ForbidPut == true) {
+                return async (request, database, CancellationToken) => TypedResults.Forbid();
+            }
+        }
         return async (request, database, cancellationToken) => {
             var dbSet = database.Set<T>();
             var found = await dbSet.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
