@@ -6,11 +6,12 @@ public class CrudSupply : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) {
         Crud<Supply>.MapEndpoints(app, new CrudSpecification<Supply> {
             AuthorizationPolicies = [ "IsAdmin", "IsLibrarian" ],
-            ModifyBeforePost = x => {
-                x.Date = DateTime.UtcNow;
+            ModifyBeforePost = async (request, context, database, cancellationToken) => {
+                request.Date = DateTime.UtcNow;
+                return null;
             },
-            ModifyBeforePut = (x, y) => {
-                x.Date = y.Date;
+            ModifyBeforePut = (request, found) => {
+                request.Date = found.Date;
             }
         });
     }

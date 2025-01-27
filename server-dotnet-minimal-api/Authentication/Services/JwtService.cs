@@ -65,8 +65,9 @@ public class JwtService {
     }
 
     public static int? ExtractUserIdFromToken(HttpContext context) {
-        var requestToken = new JwtSecurityToken(context.Request.Cookies["token"]);
-        var userIdClaim = requestToken.Claims.SingleOrDefault(c => c.Type == "uid");
+        //var requestToken = new JwtSecurityToken(context.Request.Cookies["token"]);
+        //var userIdClaim = requestToken.Claims.SingleOrDefault(c => c.Type == "uid");
+        var userIdClaim = context.User.Claims.FirstOrDefault(c => c.Type == "uid");
         if (userIdClaim is null) {
             return null;
         }

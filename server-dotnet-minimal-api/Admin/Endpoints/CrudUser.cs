@@ -6,25 +6,26 @@ public class CrudUser : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) {
         Crud<User>.MapEndpoints(app, new CrudSpecification<User> {
             AuthorizationPolicies = [ "IsAdmin" ],
-            ModifyAfterGet = x => {
-                x.PasswordHash = "";
+            ModifyAfterGet = request => {
+                request.PasswordHash = "";
             },
-            ModifyAfterGetMultiple = x => {
-                x.PasswordHash = "";
+            ModifyAfterGetMultiple = request => {
+                request.PasswordHash = "";
             },
             EnsureUniqueBeforePost = [ "Email" ],
-            ModifyBeforePost = x => {
-                x.RegisterDate = DateTime.UtcNow;
-                x.PasswordHash = BCrypt.Net.BCrypt.HashPassword(x.PasswordHash);
+            ModifyBeforePost = async (request, context, database, cancellationToken) => {
+                request.RegisterDate = DateTime.UtcNow;
+                request.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.PasswordHash);
+                return null;
             },
-            ModifyAfterPost = x => {
-                x.PasswordHash = "";
+            ModifyAfterPost = async (request, created, database, cancellationToken) => {
+                request.PasswordHash = "";
             },
-            ModifyBeforePut = (x, y) => {
-                if (x.PasswordHash.Length == 0) {
-                    x.PasswordHash = y.PasswordHash;
+            ModifyBeforePut = (request, found) => {
+                if (request.PasswordHash.Length == 0) {
+                    request.PasswordHash = found.PasswordHash;
                 } else {
-                    x.PasswordHash = BCrypt.Net.BCrypt.HashPassword(x.PasswordHash);
+                    request.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.PasswordHash);
                 }
             }
         });

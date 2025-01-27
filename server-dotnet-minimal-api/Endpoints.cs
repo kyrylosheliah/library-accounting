@@ -79,6 +79,17 @@ public static class Endpoints {
             .MapEndpoint<DeleteBookCover>()
             .MapEndpoint<GetBookCover>()
             .MapEndpoint<PostBookCover>()
-            .MapEndpoint<CrudBook>();
+            .MapEndpoint<PostDebtBorrow>()
+            .MapEndpoint<PostShelfSupply>()
+            .MapEndpoint<CrudAppointment>()
+            .MapEndpoint<CrudBook>()
+            .MapEndpoint<CrudBorrow>()
+            .MapEndpoint<CrudBorrowItem>()
+            .MapEndpoint<CrudCategory>()
+            .MapEndpoint<CrudReturn>()
+            .MapEndpoint<CrudReturnItem>()
+            .MapEndpoint<CrudSupplier>()
+            .MapEndpoint<CrudSupply>()
+            .MapEndpoint<CrudSupplyItem>();
     }
 }

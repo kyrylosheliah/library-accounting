@@ -10,9 +10,10 @@ public class CrudEnrollment : IEndpoint {
             EnsureExistsBeforePost = async (request, database, cancellationToken) => 
                 await database.Set<User>().FirstOrDefaultAsync(
                     e => e.Id == request.StaffId, cancellationToken
-                ) is not null,
-            ModifyBeforePost = x => {
-                x.EventDate = DateTime.UtcNow;
+                ) is null ? TypedResults.NotFound("Such user does not exist") : null,
+            ModifyBeforePost = async (request, context, database, cancellationToken) => {
+                request.EventDate = DateTime.UtcNow;
+                return null;
             },
             ForbidPut = true
         });

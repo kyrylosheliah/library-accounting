@@ -14,7 +14,7 @@ public class CrudBook : IEndpoint {
             EnsureExistsBeforePost = async (request, database, cancellationToken) =>
                 await database.Set<BookCategory>().FirstOrDefaultAsync(
                     x => x.Id == request.CategoryId, cancellationToken
-                ) is not null,
+                ) is null ? TypedResults.NotFound("Such category does not exist") : null,
         });
     }
 }

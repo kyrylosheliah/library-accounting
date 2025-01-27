@@ -4,7 +4,7 @@ namespace LibAcct.Librarian.Services;
 
 public class BookCoverService { 
 
-    public static async Task<FileContentHttpResult ?> ReadBookCover(int bookId)
+    public static async Task<FileContentHttpResult?> ReadBookCover(int bookId)
     {
         var filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\api\\book");
         var dir = new DirectoryInfo(filepath);

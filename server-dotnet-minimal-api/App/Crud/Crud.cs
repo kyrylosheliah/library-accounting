@@ -55,6 +55,9 @@ public class Crud<T> where T : class, IEntity, new() {
             if (found is null) {
                 return TypedResults.NotFound();
             }
+            if (spec.DoBeforeDelete is not null) {
+                spec.DoBeforeDelete(found, database);
+            }
             dbSet.Remove(found);
             if (await database.SaveChangesAsync(cancellationToken) == 0) {
                 var entityName = dbSet.EntityType.Name;
@@ -120,12 +123,13 @@ public class Crud<T> where T : class, IEntity, new() {
         };
     }
 
-    private static Func<T,
+    private static Func<HttpContext,
+                        T,
                         AppDatabase,
                         CancellationToken,
                         Task<IResult>>
     DecorateHandlePost(CrudSpecification<T> spec) {
-        return async (request, database, cancellationToken) => {
+        return async (context, request, database, cancellationToken) => {
             var dbSet = database.Set<T>();
             if (spec.EnsureExistsBeforePost is not null) {
                 var searchQuery = dbSet.AsQueryable();
@@ -139,13 +143,17 @@ public class Crud<T> where T : class, IEntity, new() {
                 }
             }
             if (spec.EnsureExistsBeforePost is not null) {
-                if (!await spec.EnsureExistsBeforePost(request, database, cancellationToken)) {
-                    return TypedResults.BadRequest();
+                var checkResult = await spec.EnsureExistsBeforePost(request, database, cancellationToken);
+                if (checkResult is not null) {
+                    return checkResult;
                 }
             }
             request.Id = 0;
             if (spec.ModifyBeforePost is not null) {
-                spec.ModifyBeforePost(request);
+                var modificationResult = await spec.ModifyBeforePost(request, context, database, cancellationToken);
+                if (modificationResult is not null) {
+                    return modificationResult;
+                }
             }
             var created = await dbSet.AddAsync(request, cancellationToken);
             var entityName = dbSet.EntityType.Name;
@@ -153,7 +161,7 @@ public class Crud<T> where T : class, IEntity, new() {
                 return TypedResults.InternalServerError($"Failed to add a record in '{entityName}' table");
             }
             if (spec.ModifyAfterPost is not null) {
-                spec.ModifyAfterPost(request);
+                await spec.ModifyAfterPost(request, created.Entity, database, cancellationToken);
             }
             return TypedResults.Created("Post" + entityName, created.CurrentValues.ToObject());
         };
