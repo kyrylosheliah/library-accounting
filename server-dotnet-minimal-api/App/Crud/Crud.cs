@@ -81,8 +81,8 @@ public class Crud<T> where T : class, IEntity, new() {
             if (found is null) {
                 return TypedResults.NotFound();
             }
-            if (spec.ModifyAfterGet is not null) {
-                spec.ModifyAfterGet(found);
+            if (spec.DoAfterGet is not null) {
+                spec.DoAfterGet(found);
             }
             return TypedResults.Ok(found);
         };
@@ -114,9 +114,9 @@ public class Crud<T> where T : class, IEntity, new() {
             if (pageCount == 0) {
                 return TypedResults.NotFound();
             }
-            if (spec.ModifyAfterGetMultiple is not null) {
+            if (spec.DoAfterGetMultiple is not null) {
                 foreach (var entity in result) {
-                    spec.ModifyAfterGetMultiple(entity);
+                    spec.DoAfterGetMultiple(entity);
                 }
             }
             return TypedResults.Ok(new GetMultipleResponse(pageCount, result));
@@ -131,7 +131,7 @@ public class Crud<T> where T : class, IEntity, new() {
     DecorateHandlePost(CrudSpecification<T> spec) {
         return async (context, request, database, cancellationToken) => {
             var dbSet = database.Set<T>();
-            if (spec.EnsureExistsBeforePost is not null) {
+            if (spec.EnsureUniqueBeforePost is not null) {
                 var searchQuery = dbSet.AsQueryable();
                 foreach (var property in spec.EnsureUniqueBeforePost) {
                     var requestFieldValue = typeof(T).GetProperty(property).GetValue(request).ToString();
@@ -142,17 +142,11 @@ public class Crud<T> where T : class, IEntity, new() {
                     return TypedResults.Conflict();
                 }
             }
-            if (spec.EnsureExistsBeforePost is not null) {
-                var checkResult = await spec.EnsureExistsBeforePost(request, database, cancellationToken);
+            request.Id = 0;
+            if (spec.DoBeforePost is not null) {
+                var checkResult = await spec.DoBeforePost(request, context, database, cancellationToken);
                 if (checkResult is not null) {
                     return checkResult;
-                }
-            }
-            request.Id = 0;
-            if (spec.ModifyBeforePost is not null) {
-                var modificationResult = await spec.ModifyBeforePost(request, context, database, cancellationToken);
-                if (modificationResult is not null) {
-                    return modificationResult;
                 }
             }
             var created = await dbSet.AddAsync(request, cancellationToken);
@@ -160,8 +154,8 @@ public class Crud<T> where T : class, IEntity, new() {
             if (await database.SaveChangesAsync(cancellationToken) == 0) {
                 return TypedResults.InternalServerError($"Failed to add a record in '{entityName}' table");
             }
-            if (spec.ModifyAfterPost is not null) {
-                await spec.ModifyAfterPost(request, created.Entity, database, cancellationToken);
+            if (spec.DoAfterPost is not null) {
+                await spec.DoAfterPost(request, created.Entity, database, cancellationToken);
             }
             return TypedResults.Created("Post" + entityName, created.CurrentValues.ToObject());
         };
@@ -181,8 +175,8 @@ public class Crud<T> where T : class, IEntity, new() {
             if (found is null) {
                 return TypedResults.NotFound();
             }
-            if (spec.ModifyBeforePut is not null) {
-                spec.ModifyBeforePut(request, found);
+            if (spec.DoBeforePut is not null) {
+                spec.DoBeforePut(request, found);
             }
             dbSet.Entry(found).CurrentValues.SetValues(request);
             if (await database.SaveChangesAsync(cancellationToken) == 0) {

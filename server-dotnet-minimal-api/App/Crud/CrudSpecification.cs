@@ -13,29 +13,24 @@ public class CrudSpecification<T> {
     /// <summary>
     /// T request
     /// </summary>
-    public Action<T>? ModifyAfterGet { get; set; } = null;
+    public Action<T>? DoAfterGet { get; set; } = null;
     /// <summary>
     /// T request
     /// </summary>
-    public Action<T>? ModifyAfterGetMultiple { get; set; } = null;
+    public Action<T>? DoAfterGetMultiple { get; set; } = null;
     public string[]? EnsureUniqueBeforePost { get; set; } = null!;
     /// <summary>
-    /// .Invoke(T request, AppDatabase _, CancellationToken _)
+    /// .Invoke(T request, HttpContext _, AppDatabase _, CancellationToken _)
     /// Return `null` if the check passed or a `TypedResult` to immediately return response
     /// </summary>
-    public Func<T, AppDatabase, CancellationToken, Task<IResult?>>? EnsureExistsBeforePost { get; set; } = null;
-    /// <summary>
-    /// .Invoke(T request, T found, HttpContext _, AppDatabase _, CancellationToken _)
-    /// Return `null` if the check passed or a `TypedResult` to immediately return response
-    /// </summary>
-    public Func<T, HttpContext, AppDatabase, CancellationToken, Task<IResult?>>? ModifyBeforePost { get; set; } = null;
+    public Func<T, HttpContext, AppDatabase, CancellationToken, Task<IResult?>>? DoBeforePost { get; set; } = null;
     /// <summary>
     /// T request, T created, AppDatabase _, CancellationToken _
     /// </summary>
-    public Func<T, T, AppDatabase, CancellationToken, Task>? ModifyAfterPost { get; set; } = null;
+    public Func<T, T, AppDatabase, CancellationToken, Task>? DoAfterPost { get; set; } = null;
     /// <summary>
     /// T request, T found
     /// </summary>
-    public Action<T, T>? ModifyBeforePut { get; set; } = null;
+    public Action<T, T>? DoBeforePut { get; set; } = null;
     public bool? ForbidPut { get; set; } = null;
 }

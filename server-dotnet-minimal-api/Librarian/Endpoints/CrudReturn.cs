@@ -7,7 +7,7 @@ public class CrudReturn : IEndpoint {
     public static void Map(IEndpointRouteBuilder app) {
         Crud<Return>.MapEndpoints(app, new CrudSpecification<Return> {
             AuthorizationPolicies = [ "IsAdmin", "IsLibrarian" ],
-            ModifyBeforePost = async (request, context, database, cancellationToken) => {
+            DoBeforePost = async (request, context, database, cancellationToken) => {
                 var staffId = JwtService.ExtractUserIdFromToken(context);
                 if (staffId is null) {
                     // should be unreachable when the endpoint requres authorization policies
@@ -21,7 +21,7 @@ public class CrudReturn : IEndpoint {
                 request.Date = DateTime.UtcNow;
                 return null;
             },
-            ModifyBeforePut = (request, found) => {
+            DoBeforePut = (request, found) => {
                 request.StaffId = found.StaffId;
                 request.Date = found.Date;
             }

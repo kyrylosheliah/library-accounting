@@ -11,10 +11,15 @@ public class CrudBook : IEndpoint {
                 BookCoverService.DeleteBookCover(x);
             },
             EnsureUniqueBeforePost = [ "Isbn", "Title" ],
-            EnsureExistsBeforePost = async (request, database, cancellationToken) =>
-                await database.Set<BookCategory>().FirstOrDefaultAsync(
+            DoBeforePost = async (request, context, database, cancellationToken) => {
+                var userFound = await database.Set<BookCategory>().FirstOrDefaultAsync(
                     x => x.Id == request.CategoryId, cancellationToken
-                ) is null ? TypedResults.NotFound("Such category does not exist") : null,
+                );
+                if (userFound is null) {
+                    return TypedResults.NotFound("Such category does not exist");
+                }
+                return null;
+            }
         });
     }
 }

@@ -7,15 +7,31 @@ public class CrudEnrollment : IEndpoint {
         Crud<Enrollment>.MapEndpoints(app, new CrudSpecification<Enrollment> {
             AuthorizationPolicies = [ "IsAdmin" ],
             EnsureUniqueBeforePost = [ "StaffId", "EventId" ],
-            EnsureExistsBeforePost = async (request, database, cancellationToken) => 
-                await database.Set<User>().FirstOrDefaultAsync(
+            DoBeforePost = async (request, context, database, cancellationToken) => {
+                var userFound = await database.Set<User>().FirstOrDefaultAsync(
                     e => e.Id == request.StaffId, cancellationToken
-                ) is null ? TypedResults.NotFound("Such user does not exist") : null,
-            ModifyBeforePost = async (request, context, database, cancellationToken) => {
+                );
+                if (userFound is null) {
+                    return TypedResults.NotFound("Such user does not exist");
+                }
+                database.UserClaims.Add(
+                    new UserClaim() {
+                        Id = 0,
+                        UserId = request.StaffId,
+                        Type = "librarian",
+                        Value = "true"
+                    }
+                );
                 request.EventDate = DateTime.UtcNow;
                 return null;
             },
-            ForbidPut = true
+            ForbidPut = true,
+            DoBeforeDelete = (found, database) => {
+                var foundClaims = database.UserClaims.Where(x => x.UserId == found.StaffId).ToList();
+                if (foundClaims.Count > 0) {
+                    database.UserClaims.RemoveRange(foundClaims);
+                }
+            }
         });
     }
 }

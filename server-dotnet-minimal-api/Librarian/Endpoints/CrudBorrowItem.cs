@@ -13,7 +13,7 @@ public class CrudBorrowItem : IEndpoint {
                     database.Debts.Remove(debtFound);
                 }
             },
-            ModifyBeforePost = async (request, context, database, cancellationToken) => {
+            DoBeforePost = async (request, context, database, cancellationToken) => {
                 var borrowFound = await database.Borrows.FirstOrDefaultAsync(x => x.Id == request.BorrowId, cancellationToken);
                 if (borrowFound is null) {
                     return TypedResults.NotFound("Such borrow does not exist");
@@ -32,7 +32,7 @@ public class CrudBorrowItem : IEndpoint {
                 
                 return null;
             },
-            ModifyAfterPost = async (request, created, database, cancellationToken) => {
+            DoAfterPost = async (request, created, database, cancellationToken) => {
                 var borrowFound = await database.Borrows.FirstOrDefaultAsync(x => x.Id == request.BorrowId, cancellationToken);
                 var debtCreated = await database.Debts.AddAsync(
                     new Debt() {
