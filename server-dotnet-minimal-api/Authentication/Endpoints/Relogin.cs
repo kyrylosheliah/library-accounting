@@ -13,11 +13,7 @@ public class Relogin : IEndpoint {
         AppSettings settings,
         CancellationToken cancellationToken
     ) {
-        var userId = JwtService.ExtractUserIdFromToken(context);
-        if (userId is null) {
-            return TypedResults.BadRequest();
-        }
-        var user = await database.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var user = await JwtService.ExtractUserFromToken(context, database, cancellationToken);
         if (user is null) {
             return TypedResults.NotFound();
         }

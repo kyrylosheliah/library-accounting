@@ -28,8 +28,10 @@ public class Crud<T> where T : class, IEntity, new() {
             .WithSummary($"Get the '{entityName}' table entity count")
             .RequireAuthorization(spec.AuthorizationPolicies);
 
+        //var pluralRoute = (spec.Plural ?? (routePrefix + "s")).ToLower();
+        var pluralRoute = (spec.Plural is null) ? (routePrefix + "s") : spec.Plural.ToLower();
         app
-            .MapPost(routePrefix + "s", DecorateHandleGetMultiple(spec))
+            .MapPost(pluralRoute, DecorateHandleGetMultiple(spec))
             .WithSummary($"Get filtered and paginated '{entityName}' table record list")
             .RequireAuthorization(spec.AuthorizationPolicies);
 

@@ -9,16 +9,16 @@ public class CrudBorrow : IEndpoint {
         Crud<Borrow>.MapEndpoints(app, new CrudSpecification<Borrow> {
             AuthorizationPolicies = [ "IsAdmin", "IsLibrarian" ],
             DoBeforePost = async (request, context, database, cancellationToken) => {
-                var user = await AccountingService.AccessUserThroughMembership(request.ReaderId, database, cancellationToken);
-                if (user is null) {
+                var reader = await AccountingService.AccessUserThroughMembership(request.ReaderId, database, cancellationToken);
+                if (reader is null) {
                     return TypedResults.NotFound("There is no active membership, or such user does not exist");
                 };
-                var staffId = JwtService.ExtractUserIdFromToken(context);
-                if (staffId is null) {
+                var staff = await JwtService.ExtractUserFromToken(context, database, cancellationToken);
+                if (staff is null) {
                     // should be unreachable when the endpoint requres authorization policies
                     return TypedResults.Unauthorized();
                 }
-                var staff = await database.Users.FirstOrDefaultAsync(x => x.Id == staffId, cancellationToken);
+                var staffId = staff.Id;
                 if (staff is null) {
                     return TypedResults.NotFound("Such staff does not exist");
                 }

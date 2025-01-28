@@ -1,6 +1,7 @@
 namespace LibAcct.App.Crud;
 
 public class CrudSpecification<T> {
+    public string? Plural = null;
     public string[] AuthorizationPolicies { get; set; } = [];
     /// <summary>
     /// T found, AppDatabase _

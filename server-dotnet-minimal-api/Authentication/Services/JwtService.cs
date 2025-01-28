@@ -77,4 +77,16 @@ public class JwtService {
         }
         return userId;
     }
+
+    public static async Task<User?> ExtractUserFromToken(HttpContext context, AppDatabase database, CancellationToken cancellationToken) {
+        var userIdClaim = context.User.Claims.FirstOrDefault(c => c.Type == "uid");
+        if (userIdClaim is null) {
+            return null;
+        }
+        int userId;
+        if (!int.TryParse(userIdClaim.Value, out userId)) {
+            return null;
+        }
+        return await database.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+    }
 }

@@ -3,6 +3,8 @@ using Microsoft.OpenApi.Models;
 using LibAcct.Authentication.Endpoints;
 using LibAcct.Admin.Endpoints;
 using LibAcct.Librarian.Endpoints;
+using LibAcct.Reader.Endpoints;
+using LibAcct.Library.Endpoints;
 
 namespace LibAcct;
 
@@ -18,15 +20,15 @@ public static class Endpoints {
     };
 
     public static void MapEndpoints(this WebApplication app) {
-        var endpoints = app.MapGroup("")
+        var endpoints = app.MapGroup("/api")
             .AddEndpointFilter<RequestLoggingFilter>()
             .WithOpenApi();
 
         endpoints.MapAuthenticationEndpoints();
         endpoints.MapAdminEndpoints();
         endpoints.MapLibrarianEndpoints();
-        //endpoints.MapUserEndpoints();
-        //endpoints.MapLibraryEndpoints();
+        endpoints.MapUserEndpoints();
+        endpoints.MapLibraryEndpoints();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app) where TEndpoint : IEndpoint {
@@ -91,5 +93,37 @@ public static class Endpoints {
             .MapEndpoint<CrudSupplier>()
             .MapEndpoint<CrudSupply>()
             .MapEndpoint<CrudSupplyItem>();
+    }
+
+    private static void MapUserEndpoints(this IEndpointRouteBuilder app) {
+        var endpoints = app.MapGroup("/user")
+            .WithTags("User");
+
+        endpoints.MapAuthorizedGroup()
+            .MapEndpoint<DeleteAvatar>()
+            .MapEndpoint<DeleteWish>()
+            .MapEndpoint<GetBorrows>()
+            .MapEndpoint<GetDebts>()
+            .MapEndpoint<GetMembership>()
+            .MapEndpoint<GetReturns>()
+            .MapEndpoint<GetUser>()
+            .MapEndpoint<GetWish>()
+            .MapEndpoint<GetWishes>()
+            .MapEndpoint<PostAvatar>()
+            .MapEndpoint<PostMembershipTransaction>()
+            .MapEndpoint<PostPassword>()
+            .MapEndpoint<PostUser>()
+            .MapEndpoint<PostWish>();
+    }
+
+    private static void MapLibraryEndpoints(this IEndpointRouteBuilder app) {
+        var endpoints = app.MapGroup("/library")
+            .WithTags("Library");
+
+        endpoints.MapPublicGroup()
+            .MapEndpoint<GetBook>()
+            .MapEndpoint<GetCategories>()
+            .MapEndpoint<GetCategory>()
+            .MapEndpoint<PostSearch>();
     }
 }
